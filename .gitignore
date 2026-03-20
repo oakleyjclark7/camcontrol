@@ -1,0 +1,23 @@
+# CMake
+/build/
+/CMakeFiles/
+/CMakeCache.txt
+cmake_install.cmake
+Makefile
+/out/
+
+# Visual Studio
+*.sln
+*.vcxproj*
+*.user
+*.pdb
+*.vs
+
+# vcpkg build output (if using per-project)
+vcpkg_installed/
+
+# OS
+.DS_Store
+Thumbs.db
+
+.gitignore
