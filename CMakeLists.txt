@@ -23,5 +23,8 @@ target_sources(camcontrol
 )
 
 target_link_libraries(camcontrol
-	camera
+	PRIVATE camera
 )
+
+# Optional targets
+option(BUILD_CAMERA_STREAMING_EXAMPLE "BUILD_CAMERA_STREAMING_EXAMPLE" ON)
