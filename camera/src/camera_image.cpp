@@ -1,1 +1,0 @@
-#include <camera/camera_image.hpp>
