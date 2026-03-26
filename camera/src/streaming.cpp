@@ -22,10 +22,16 @@ Streaming::~Streaming()
 void Streaming::connect()
 {
     captureThread_ = std::jthread([this]() {
-        if (vc_.open(cameraIndex_)) {
-            std::println("Connected to camera");
-        } else {
-            std::println("Connection to camera failed");
+        try {
+            if (vc_.open(cameraIndex_)) {
+                std::println("Connected to camera");
+            } else {
+                std::println("Connection to camera failed");
+            }
+        } catch (std::exception &e) {
+            std::println("Error while connecting to camera: {}", e.what());
+        } catch (...) {
+            std::println("Unknown error while connecting to camera");
         }
     });
     if (captureThread_.joinable()) {
@@ -36,24 +42,30 @@ void Streaming::connect()
 void Streaming::startStreaming(std::function<void(CameraImage)> cb)
 {
     captureThread_ = std::jthread([this, cb = std::move(cb)](std::stop_token streamingStopToken) {
-        std::println("Starting camera stream");
-        cv::Mat frame;
-        while (!streamingStopToken.stop_requested()) {
-            if (vc_.read(frame)) {
-                CameraImage img(frame);
-                cb(std::move(img));
-            } else {
-                // If read fails, we have disconnected. Until stopStreaming_ is called, this will continue to try to
-                // reconnect when disconnected
-                if (vc_.isOpened()) {
-                    vc_.release();
-                }
-                std::println("Unabled to retreive camera frame, trying to reconnect");
-                std::this_thread::sleep_for(reconnectionWaitTime_);
-                if (vc_.open(cameraIndex_)) {
-                    std::println("Reconnected to camera");
+        try {
+            std::println("Starting camera stream");
+            cv::Mat frame;
+            while (!streamingStopToken.stop_requested()) {
+                if (vc_.read(frame)) {
+                    CameraImage img(frame);
+                    cb(std::move(img));
+                } else {
+                    // If read fails, we have disconnected. Until stopStreaming_ is called, this will continue to try to
+                    // reconnect when disconnected
+                    if (vc_.isOpened()) {
+                        vc_.release();
+                    }
+                    std::println("Unabled to retreive camera frame, trying to reconnect");
+                    std::this_thread::sleep_for(reconnectionWaitTime_);
+                    if (vc_.open(cameraIndex_)) {
+                        std::println("Reconnected to camera");
+                    }
                 }
             }
+        } catch (std::exception &e) {
+            std::println("Error while streaming from camera: {}", e.what());
+        } catch (...) {
+            std::println("Unknown error while streaming from camera");
         }
     });
 }
@@ -65,8 +77,14 @@ void Streaming::stopStreaming()
         captureThread_.join();
     }
     captureThread_ = std::jthread([this]() {
-        if (vc_.isOpened()) {
-            vc_.release();
+        try {
+            if (vc_.isOpened()) {
+                vc_.release();
+            }
+        } catch (std::exception &e) {
+            std::println("Error while stopping streaming: {}", e.what());
+        } catch (...) {
+            std::println("Unknown error while stopping streaming");
         }
     });
 }
