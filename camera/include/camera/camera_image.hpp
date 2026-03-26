@@ -7,6 +7,11 @@
 namespace camcontrol::camera
 {
 
+struct Resolution {
+    uint16_t width;
+    uint16_t height;
+};
+
 struct CameraImage {
 
     int rows = 0;
