@@ -1,5 +1,6 @@
 #include <camera/find_faces.hpp>
 #include <camera/streaming.hpp>
+#include <files/files.hpp>
 
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
@@ -15,10 +16,9 @@ int main()
     try {
         camera::Streaming stream;
 
-        std::filesystem::path modelPath{
-            "C:/Projects/camcontrol/camera/face_detection_yunet_2023mar.onnx"}; // todo(OC) move this to a sensible
-                                                                                // place
-        camera::Resolution resolution{.width = 640, .height = 480};             // todo(OC) move to config file
+        auto modelPath = files::faceDetectionModel();
+        // auto cameraConfig = files::cameraConfig();
+        camera::Resolution resolution{.width = 640, .height = 480};             // todo(OC) move to the camera config file
         camera::FaceDetection fd{modelPath, resolution};
 
         stream.connect();

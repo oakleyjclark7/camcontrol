@@ -11,20 +11,38 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    add_compile_definitions(DEBUG)
+endif()
+
 project ("camcontrol")
 
-# camera library
+# Copy resources
+function(copy_resources_to_target TARGET_NAME)
+	add_custom_command(TARGET ${TARGET_NAME} POST_BUILD
+	COMMAND ${CMAKE_COMMAND} -E copy_directory 
+	${CMAKE_SOURCE_DIR}/resources
+	$<TARGET_FILE_DIR:${TARGET_NAME}>/resources 
+	COMMENT "Resources will be copied for ${TARGET_NAME}"
+	) 
+endfunction()
+
+# external libraries
+find_package(Qt6Core)
+
+# libraries
 add_subdirectory(camera)
+add_subdirectory(files)
 
 # First test executable
 add_executable (camcontrol)
 target_sources(camcontrol
 	PRIVATE "main.cpp"
 )
-
 target_link_libraries(camcontrol
 	PRIVATE camera
 )
+copy_resources_to_target(camcontrol)
 
 # Optional targets
 option(BUILD_CAMERA_STREAMING_EXAMPLE "BUILD_CAMERA_STREAMING_EXAMPLE" ON)
