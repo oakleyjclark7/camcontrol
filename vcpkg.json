@@ -1,5 +1,9 @@
 {
     "dependencies": [
-        "opencv"
+        "opencv",
+        "qtbase",
+        "qtdeclarative",
+        "qtquickcontrols2",
+        "qtmultimedia"
     ]
 }

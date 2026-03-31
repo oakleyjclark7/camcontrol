@@ -11,6 +11,7 @@ find_package(OpenCV REQUIRED)
 target_link_libraries(camera
 	PUBLIC opencv_videoio
 	PUBLIC opencv_objdetect
+	PUBLIC files
 )
 
 if(BUILD_CAMERA_STREAMING_EXAMPLE)
@@ -26,6 +27,7 @@ if(BUILD_CAMERA_STREAMING_EXAMPLE)
 		PRIVATE opencv_videoio
 		PRIVATE opencv_highgui
 	)
+	copy_resources_to_target(camera_streaming_example)
 endif()
 
 if(BUILD_FACE_DETECTION_EXAMPLE)
@@ -41,4 +43,5 @@ if(BUILD_FACE_DETECTION_EXAMPLE)
 		PRIVATE opencv_videoio
 		PRIVATE opencv_highgui
 	)
+	copy_resources_to_target(face_detection_example)
 endif()
