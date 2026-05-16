@@ -1,0 +1,23 @@
+{
+  "version": 3,
+  "configurePresets": [
+    {
+      "name": "firmware arm debug",
+      "displayName": "firmware arm debug",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/out/build/debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "firmware arm release",
+      "displayName": "firmware arm release",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/out/build/release",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    }
+  ]
+}
