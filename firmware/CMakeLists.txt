@@ -32,3 +32,6 @@ pico_sdk_init()
 
 # Test executable to blink the default LED
 add_subdirectory(blink_test)
+
+# Build libraries
+add_subdirectory(motor_control)
