@@ -19,17 +19,17 @@ void cycleLed(const int ledPin, int timeMs)
     sleep_ms(timeMs);
 }
 
-void sweepMotors(MotorControl& m1, MotorControl& m2)
+void sweepMotors(MotorControl& pan, MotorControl& tilt)
 {
     for (int i = 0; i < 180; i++){
-        m1.moveByDeg(1);
-        m2.moveByDeg(1);
-        sleep_ms(4);
+        pan.moveByDeg(2);
+        tilt.moveByDeg(1);
+        sleep_ms(8);
     }
     for (int i = 0; i < 180; i++){
-        m1.moveByDeg(-1);
-        m2.moveByDeg(-1);
-        sleep_ms(4);
+        pan.moveByDeg(-2);
+        tilt.moveByDeg(-1);
+        sleep_ms(8);
     }
 }
 
@@ -43,10 +43,8 @@ int main() {
 
     // Create motor instances, attach to correct pins
     auto panMotor = MotorControl{PAN_SERVO_PIN, PositionLimitDegrees{-90, 90}};
-    auto tiltMotor = MotorControl{TILT_SERVO_PIN, PositionLimitDegrees{-90, 90}};
-    // Start them at their initial positions
-    panMotor.moveByDeg(-90);
-    tiltMotor.moveByDeg(90);
+    auto tiltMotor = MotorControl{TILT_SERVO_PIN, PositionLimitDegrees{0, 90}};
+
     sleep_ms(3000);
 
     while (true) {

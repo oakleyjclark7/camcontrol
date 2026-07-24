@@ -7,8 +7,8 @@ namespace camcontrol::firmware::motor_control {
 
 MotorControl::MotorControl(uint8_t pin, PositionLimitDegrees limits)
 : pin_(pin)
-, positionDegrees_(0)
 , limits_(limits)
+, positionDegrees_(limits.min)
 {
     // Initialise the pin for pwm
     gpio_set_function(pin_, GPIO_FUNC_PWM);
