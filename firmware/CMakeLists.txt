@@ -35,3 +35,4 @@ add_subdirectory(blink_test)
 
 # Build libraries
 add_subdirectory(motor_control)
+add_subdirectory(comms)
