@@ -36,3 +36,17 @@ add_subdirectory(blink_test)
 # Build libraries
 add_subdirectory(motor_control)
 add_subdirectory(comms)
+
+# Main executable
+add_executable(command_motor_control)
+target_sources(command_motor_control
+    PRIVATE main.cpp
+)
+target_link_libraries(command_motor_control
+    PRIVATE pico_stdlib
+    PRIVATE motor_control
+    PRIVATE comms
+)
+pico_add_extra_outputs(command_motor_control)
+pico_enable_stdio_usb(command_motor_control 1)
+pico_enable_stdio_uart(command_motor_control 0)
